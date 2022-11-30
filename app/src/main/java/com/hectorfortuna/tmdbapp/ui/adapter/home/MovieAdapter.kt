@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.hectorfortuna.tmdbapp.data.model.popular.Result
+import com.hectorfortuna.tmdbapp.data.network.model.popular.Result
 import com.hectorfortuna.tmdbapp.databinding.MovieItemBinding
 import com.hectorfortuna.tmdbapp.util.imageUrl
 

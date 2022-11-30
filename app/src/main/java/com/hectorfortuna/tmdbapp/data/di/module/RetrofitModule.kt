@@ -1,7 +1,7 @@
 package com.hectorfortuna.tmdbapp.data.di.module
 
 import com.google.gson.GsonBuilder
-import com.hectorfortuna.tmdbapp.data.network.Service
+import com.hectorfortuna.tmdbapp.data.network.api.Service
 import com.hectorfortuna.tmdbapp.util.baseUrl
 import dagger.Module
 import dagger.Provides
@@ -19,7 +19,7 @@ object RetrofitModule {
 
     @Singleton
     @Provides
-    fun initRetrofit(): Service{
+    fun initRetrofit(): Service {
         val gson = GsonBuilder().setLenient().create()
         val logging = HttpLoggingInterceptor()
         logging.setLevel(HttpLoggingInterceptor.Level.BODY)

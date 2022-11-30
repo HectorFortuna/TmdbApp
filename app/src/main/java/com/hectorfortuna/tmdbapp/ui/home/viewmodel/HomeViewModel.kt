@@ -6,8 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hectorfortuna.tmdbapp.data.core.State
 import com.hectorfortuna.tmdbapp.data.di.qualifiers.Io
-import com.hectorfortuna.tmdbapp.data.model.popular.PopularResponse
-import com.hectorfortuna.tmdbapp.data.model.repository.popular.PopularRepository
+import com.hectorfortuna.tmdbapp.data.network.model.popular.PopularResponse
+import com.hectorfortuna.tmdbapp.data.network.usecase.popular.PopularUseCase
+import com.hectorfortuna.tmdbapp.data.network.usecase.search.SearchUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
@@ -16,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val repository: PopularRepository,
+    private val useCase: PopularUseCase,
+    private val searchUseCase: SearchUseCase,
     @Io val ioDispatcher: CoroutineDispatcher
 ): ViewModel(){
 
@@ -34,13 +36,25 @@ class HomeViewModel @Inject constructor(
             try {
                 _response.value = State.loading(true)
                 val response = withContext(ioDispatcher){
-                    repository.getPopularMovies(apikey,page)
+                    useCase.getPopularMovies(apikey, page)
                 }
-                _response.value = State.loading(false)
                 _response.value = State.success(response)
             } catch (throwable: Throwable){
-                _response.value = State.loading(false)
                 _response.value = State.error(throwable)
+            }
+        }
+    }
+
+    fun searchMovie(apikey: String, query: String){
+        viewModelScope.launch {
+            try {
+                _search.value = State.loading(true)
+                val searchResponse = withContext(ioDispatcher){
+                    searchUseCase.searchMovie(apikey, query)
+                }
+                _search.value = State.success(searchResponse)
+            } catch (throwable: Throwable){
+                _search.value = State.error(throwable)
             }
         }
     }

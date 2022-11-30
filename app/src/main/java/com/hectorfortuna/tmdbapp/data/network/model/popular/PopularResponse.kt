@@ -1,4 +1,4 @@
-package com.hectorfortuna.tmdbapp.data.model.popular
+package com.hectorfortuna.tmdbapp.data.network.model.popular
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
