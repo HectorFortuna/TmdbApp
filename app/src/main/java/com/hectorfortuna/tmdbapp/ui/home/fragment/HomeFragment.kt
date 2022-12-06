@@ -1,41 +1,36 @@
 package com.hectorfortuna.tmdbapp.ui.home.fragment
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.SearchView
-import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.enableSavedStateHandles
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hectorfortuna.tmdbapp.R
 import com.hectorfortuna.tmdbapp.data.core.Status
+import com.hectorfortuna.tmdbapp.data.network.model.popular.Result
 import com.hectorfortuna.tmdbapp.databinding.FragmentHomeBinding
 import com.hectorfortuna.tmdbapp.ui.adapter.home.MovieAdapter
 import com.hectorfortuna.tmdbapp.ui.home.MainActivity
 import com.hectorfortuna.tmdbapp.ui.home.viewmodel.HomeViewModel
 import com.hectorfortuna.tmdbapp.util.apiKey
 import dagger.hilt.android.AndroidEntryPoint
-import hilt_aggregated_deps._com_hectorfortuna_tmdbapp_ui_home_MainActivity_GeneratedInjector
-import com.hectorfortuna.tmdbapp.data.network.model.popular.Result as Result
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
     private val viewModel by viewModels<HomeViewModel>()
 
-    private lateinit var movieAdapter: MovieAdapter
+    private val movieAdapter = MovieAdapter()
 
     private var currentPage: Int = 1
     private var resultList = mutableListOf<Result>()
 
     private lateinit var binding: FragmentHomeBinding
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -47,6 +42,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setSearchRecyclerView()
         getPopularMovies(currentPage)
         observeVMEvents()
         setRecyclerView()
@@ -61,7 +57,6 @@ class HomeFragment : Fragment() {
         viewModel.getPopularMovies(apiKey(), page)
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     private fun observeVMEvents() {
         viewModel.response.observe(viewLifecycleOwner) {
             if (viewLifecycleOwner.lifecycle.currentState != Lifecycle.State.RESUMED) return@observe
@@ -70,13 +65,12 @@ class HomeFragment : Fragment() {
                 Status.SUCCESS -> {
                     it.data?.let { response ->
                         resultList.addAll(response.result)
-                        movieAdapter.notifyDataSetChanged()
+                        movieAdapter.submitList(resultList)
                     }
                 }
                 Status.ERROR -> {}
             }
         }
-
 
         viewModel.search.observe(viewLifecycleOwner) { state->
             if (viewLifecycleOwner.lifecycle.currentState != Lifecycle.State.RESUMED) return@observe
@@ -84,7 +78,7 @@ class HomeFragment : Fragment() {
                 Status.LOADING -> {}
                 Status.SUCCESS -> {
                     state.data?.let {
-                       setSearchRecyclerView(it.result)
+                       movieAdapter.submitList(it.result)
                     }
                 }
                 Status.ERROR -> {}
@@ -92,20 +86,15 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun setSearchRecyclerView(movieList: List<Result>) {
-        movieAdapter = MovieAdapter(movieList)
+    private fun setSearchRecyclerView() {
         binding.rvMovie.apply {
             setHasFixedSize(true)
             adapter = movieAdapter
         }
     }
 
-    private fun setAdapter() {
-        movieAdapter = MovieAdapter(resultList)
-    }
 
     private fun setRecyclerView() {
-        setAdapter()
         binding.rvMovie.apply {
             setHasFixedSize(true)
             adapter = movieAdapter
@@ -153,7 +142,6 @@ class HomeFragment : Fragment() {
         val search = menu.findItem(R.id.menu_search)
         val searchView = search.actionView as SearchView
         searchView.queryHint = getString(R.string.menu_search)
-
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean = true
 
@@ -172,5 +160,4 @@ class HomeFragment : Fragment() {
         (activity as MainActivity).supportActionBar?.title = ""
         setMenu()
     }
-
 }
