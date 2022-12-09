@@ -16,7 +16,7 @@ data class MovieDetails(
     @SerializedName("budget")
     var budget: Int,
     @SerializedName("genres")
-    var genres: Genres,
+    var genres: List<Genres>,
     @SerializedName("homepage")
     var homePage: String?,
     @SerializedName("id")
@@ -34,9 +34,9 @@ data class MovieDetails(
     @SerializedName("poster_path")
     var posterPath: String?,
     @SerializedName("production_companies")
-    var productionCompanies: ProductionCompanies,
+    var productionCompanies: List<ProductionCompanies>,
     @SerializedName("production_countries")
-    var productionCountries: ProductionCountries,
+    var productionCountries: List<ProductionCountries>,
     @SerializedName("release_date")
     var releaseDate: String,
     @SerializedName("revenue")
@@ -44,7 +44,7 @@ data class MovieDetails(
     @SerializedName("runtime")
     var runTime: Int?,
     @SerializedName("spoken_languages")
-    var spokenLanguages: SpokenLanguages,
+    var spokenLanguages: List<SpokenLanguages>,
     @SerializedName("status")
     var status: String,
     @SerializedName("tagline")

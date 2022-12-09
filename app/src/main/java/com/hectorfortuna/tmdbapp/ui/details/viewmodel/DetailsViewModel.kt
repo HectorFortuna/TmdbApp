@@ -28,7 +28,7 @@ class DetailsViewModel @Inject constructor(
             try {
                 _response.value = State.loading(true)
                 val response = withContext(ioDispatcher){
-                    useCase.getMovieDetails(apikey, movieId)
+                    useCase.getMovieDetails( movieId, apikey)
                 }
                 _response.value = State.success(response)
             } catch (throwable: Throwable){

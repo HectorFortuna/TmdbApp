@@ -7,7 +7,6 @@ import javax.inject.Inject
 
 class MovieDetailsRepositoryImpl @Inject constructor(private val api: Service) :
     MovieDetailsRepository {
-    override suspend fun getMovieDetails(apikey: String, movieId: Int): Response<MovieDetails> {
-        return api.getMovieDetails(apikey, movieId)
-    }
+    override suspend fun getMovieDetails(movieId: Int, apikey: String): Response<MovieDetails> =
+        api.getMovieDetails(movieId, apikey)
 }

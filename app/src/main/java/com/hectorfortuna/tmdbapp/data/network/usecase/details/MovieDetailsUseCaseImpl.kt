@@ -6,8 +6,9 @@ import javax.inject.Inject
 
 class MovieDetailsUseCaseImpl @Inject constructor(private val repository: MovieDetailsRepository) :
     MovieDetailsUseCase {
-    override suspend fun getMovieDetails(apiKey: String, movieId: Int): MovieDetails? {
-        val response = repository.getMovieDetails(apiKey, movieId)
+    override suspend fun getMovieDetails(movieId: Int, apiKey: String): MovieDetails? {
+
+        val response = repository.getMovieDetails( movieId,apiKey)
 
         return if (response.isSuccessful && response.code() == 200) {
             response.body()
