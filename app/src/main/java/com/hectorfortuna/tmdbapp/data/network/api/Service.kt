@@ -1,8 +1,10 @@
 package com.hectorfortuna.tmdbapp.data.network.api
 
+import com.hectorfortuna.tmdbapp.data.network.model.moviedetails.MovieDetails
 import com.hectorfortuna.tmdbapp.data.network.model.popular.PopularResponse
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface Service {
@@ -19,4 +21,10 @@ interface Service {
         @Query("api_key") apikey: String,
         @Query("query") query: String
     ): Response<PopularResponse>
+
+    @GET("3/movie/{movie_id}")
+    suspend fun getMovieDetails(
+        @Query("api_key")apikey: String,
+        @Path("movie_id")movieId: Int
+    ): Response<MovieDetails>
 }

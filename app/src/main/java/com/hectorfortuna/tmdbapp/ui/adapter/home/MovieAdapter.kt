@@ -11,11 +11,11 @@ import com.hectorfortuna.tmdbapp.util.imageUrl
 import com.hectorfortuna.tmdbapp.data.network.model.popular.Result as Result
 
 class MovieAdapter(
-
+    private val itemClick: ((item: Result) -> Unit)
 ) : ListAdapter<Result, MovieViewHolder>(diffCallback){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
-        return MovieViewHolder.create(parent)
+        return MovieViewHolder.create(parent,itemClick)
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {

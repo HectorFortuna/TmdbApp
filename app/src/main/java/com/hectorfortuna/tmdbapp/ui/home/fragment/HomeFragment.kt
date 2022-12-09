@@ -7,6 +7,7 @@ import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,7 +25,14 @@ import dagger.hilt.android.AndroidEntryPoint
 class HomeFragment : Fragment() {
     private val viewModel by viewModels<HomeViewModel>()
 
-    private val movieAdapter = MovieAdapter()
+    private val movieAdapter = MovieAdapter(){
+        findNavController().navigate(
+            R.id.action_homeFragment_to_detailsFragment,
+            Bundle().apply {
+                putParcelable("MOVIES", it)
+            }
+        )
+    }
 
     private var currentPage: Int = 1
     private var resultList = mutableListOf<Result>()
