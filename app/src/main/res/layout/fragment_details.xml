@@ -33,18 +33,19 @@
         app:layout_constraintTop_toBottomOf="@id/card_view_movie"
         app:layout_constraintStart_toStartOf="@id/card_view_movie"
         android:layout_marginTop="10dp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         android:textColor="@color/white"
-        tools:text="Bernardinho é mto legal"/>
+        tools:text="Title"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/movie_description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/card_view_movie"
-        app:layout_constraintStart_toStartOf="@id/card_view_movie"
-        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@id/movie_title"
+        app:layout_constraintStart_toStartOf="@id/movie_title"
+        android:layout_marginTop="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         android:textColor="@color/white"
-        tools:text="Bernardinho é mto legal"/>
+        tools:text="Description"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
