@@ -62,8 +62,7 @@ class DetailsFragment : Fragment() {
 
     private fun setDetailTexts(details: MovieDetails) {
         binding.apply {
-            movieTitle.text = details.originalTitle
-            movieDescription.text = details.overView
+
         }
     }
 
