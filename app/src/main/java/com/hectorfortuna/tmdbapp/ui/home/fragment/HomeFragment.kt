@@ -12,20 +12,23 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hectorfortuna.tmdbapp.R
+import com.hectorfortuna.tmdbapp.data.core.BaseFragment
 import com.hectorfortuna.tmdbapp.data.core.Status
 import com.hectorfortuna.tmdbapp.data.network.model.popular.Result
 import com.hectorfortuna.tmdbapp.databinding.FragmentHomeBinding
 import com.hectorfortuna.tmdbapp.ui.adapter.home.MovieAdapter
 import com.hectorfortuna.tmdbapp.ui.home.MainActivity
 import com.hectorfortuna.tmdbapp.ui.home.viewmodel.HomeViewModel
+import com.hectorfortuna.tmdbapp.util.CustomDialog
 import com.hectorfortuna.tmdbapp.util.apiKey
+import com.hectorfortuna.tmdbapp.util.hasInternet
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
+class HomeFragment : BaseFragment() {
     private val viewModel by viewModels<HomeViewModel>()
 
-    private val movieAdapter = MovieAdapter(){
+    private val movieAdapter = MovieAdapter() {
         findNavController().navigate(
             R.id.action_homeFragment_to_detailsFragment,
             Bundle().apply {
@@ -51,14 +54,35 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setSearchRecyclerView()
-        getPopularMovies(currentPage)
+        checkConnection()
         observeVMEvents()
         setRecyclerView()
         setupToolbar()
     }
 
+    override fun checkConnection() {
+        if (hasInternet(context)) {
+            getPopularMovies(currentPage)
+        } else {
+            setNetworkDialog()
+        }
+    }
+
     private fun searchMovie(query: String) {
         viewModel.searchMovie(apiKey(), query)
+    }
+
+    private fun setNetworkDialog() {
+        CustomDialog(
+            title = "Tente Novamente",
+            message = "Erro ao conectar-se a internet, por favor verifique sua conexão e tente novamente",
+            textYes = "Tentar novamente",
+            textNo = "Cancelar"
+        ).apply {
+            setListener {
+                checkConnection()
+            }
+        }.show(parentFragmentManager, "Connection")
     }
 
     private fun getPopularMovies(page: Int) {
@@ -80,13 +104,13 @@ class HomeFragment : Fragment() {
             }
         }
 
-        viewModel.search.observe(viewLifecycleOwner) { state->
+        viewModel.search.observe(viewLifecycleOwner) { state ->
             if (viewLifecycleOwner.lifecycle.currentState != Lifecycle.State.RESUMED) return@observe
             when (state.status) {
                 Status.LOADING -> {}
                 Status.SUCCESS -> {
                     state.data?.let {
-                       movieAdapter.submitList(it.result)
+                        movieAdapter.submitList(it.result)
                     }
                 }
                 Status.ERROR -> {}
@@ -123,6 +147,8 @@ class HomeFragment : Fragment() {
                                 currentPage++
                                 getPopularMovies(currentPage)
                             }
+
+                            if (!hasInternet(context)) {setNetworkDialog()}
 
                         }
                     }

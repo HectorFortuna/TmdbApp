@@ -7,8 +7,6 @@ import androidx.navigation.fragment.NavHostFragment
 import com.hectorfortuna.tmdbapp.R
 import com.hectorfortuna.tmdbapp.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.HiltAndroidApp
-import dagger.hilt.android.lifecycle.HiltViewModel
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
