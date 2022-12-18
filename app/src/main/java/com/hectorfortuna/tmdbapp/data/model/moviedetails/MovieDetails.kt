@@ -1,10 +1,12 @@
-package com.hectorfortuna.tmdbapp.data.network.model.moviedetails
+package com.hectorfortuna.tmdbapp.data.model.moviedetails
 
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
-
+@Entity(tableName = "movie_details_table")
 @Parcelize
 data class MovieDetails(
     @SerializedName("adult")
@@ -19,6 +21,7 @@ data class MovieDetails(
     var genres: List<Genres>,
     @SerializedName("homepage")
     var homePage: String?,
+    @PrimaryKey
     @SerializedName("id")
     var id: Int,
     @SerializedName("imdb_id")

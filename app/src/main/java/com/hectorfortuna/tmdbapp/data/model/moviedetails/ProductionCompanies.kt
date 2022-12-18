@@ -1,4 +1,4 @@
-package com.hectorfortuna.tmdbapp.data.network.model.moviedetails
+package com.hectorfortuna.tmdbapp.data.model.moviedetails
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName

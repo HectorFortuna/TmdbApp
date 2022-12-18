@@ -1,7 +1,7 @@
 package com.hectorfortuna.tmdbapp.data.network.api
 
-import com.hectorfortuna.tmdbapp.data.network.model.moviedetails.MovieDetails
-import com.hectorfortuna.tmdbapp.data.network.model.popular.PopularResponse
+import com.hectorfortuna.tmdbapp.data.model.moviedetails.MovieDetails
+import com.hectorfortuna.tmdbapp.data.model.popular.PopularResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path

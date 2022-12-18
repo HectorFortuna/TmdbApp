@@ -1,8 +1,8 @@
-package com.hectorfortuna.tmdbapp.data.network.usecase.popular
+package com.hectorfortuna.tmdbapp.data.usecase.popular
 
-import com.hectorfortuna.tmdbapp.data.network.model.popular.PopularResponse
-import com.hectorfortuna.tmdbapp.data.network.repository.popular.PopularRepository
-import com.hectorfortuna.tmdbapp.data.network.usecase.popular.PopularUseCase
+import com.hectorfortuna.tmdbapp.data.model.popular.PopularResponse
+import com.hectorfortuna.tmdbapp.data.repository.popular.PopularRepository
+import com.hectorfortuna.tmdbapp.data.usecase.popular.PopularUseCase
 import javax.inject.Inject
 
 class PopularUseCaseImpl @Inject constructor(private val repository: PopularRepository):

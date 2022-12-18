@@ -7,30 +7,139 @@
     android:background="@drawable/background_gradient"
     tools:context=".ui.details.fragment.DetailsFragment">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/card_view_movie"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        app:layout_constraintEnd_toEndOf="parent"
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view_movie_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:backgroundTint="@color/light_blue"
+        android:translationX="14dp"
+        android:translationY="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/img_poster_movie"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:cardCornerRadius="12dp"
-            tools:src="@drawable/ic_launcher_background" />
-    </com.google.android.material.card.MaterialCardView>
+            android:layout_width="160dp"
+            android:layout_height="220dp"
+            android:layout_margin="2dp"
+            android:background="@mipmap/ic_launcher"
+            android:elevation="1dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:elevation="4dp"
-        android:background="@drawable/rounded_gradient_background"
-        android:layout_marginTop="250dp">
+    </androidx.cardview.widget.CardView>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/genres"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="20dp"
+        android:padding="6dp"
+        tools:text="Genre"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/card_view_movie_details"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/release_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="20dp"
+        android:padding="6dp"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/genres"
+        app:layout_constraintTop_toBottomOf="@id/genres"
+        tools:text="Release Date"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/spoken_language"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="20dp"
+        android:padding="6dp"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/release_date"
+        app:layout_constraintTop_toBottomOf="@id/release_date"
+        tools:text="Status"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/status"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="20dp"
+        android:padding="6dp"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/spoken_language"
+        app:layout_constraintTop_toBottomOf="@id/spoken_language"
+        tools:text="Spoken Language"/>
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/favourite_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginBottom="29dp"
+        app:strokeWidth="2dp"
+        android:backgroundTint="@color/dark_blue"
+        app:shapeAppearanceOverlay="@style/CustomButton"
+        app:strokeColor="@color/light_blue"
+        app:layout_constraintBottom_toTopOf="@id/original_title"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="@id/original_title"
+        app:layout_constraintStart_toEndOf="@id/card_view_movie_details" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/original_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="50dp"
+        android:textColor="@color/light_green"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/view_divider"
+        app:layout_constraintStart_toStartOf="@id/view_divider"
+        app:layout_constraintTop_toBottomOf="@id/card_view_movie_details"
+        tools:text="Título" />
+
+    <View
+        android:id="@+id/view_divider"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="20dp"
+        android:background="@color/light_blue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/original_title" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/txt_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="15dp"
+        android:textColor="@color/light_green"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@id/view_divider"
+        app:layout_constraintStart_toStartOf="@id/view_divider"
+        app:layout_constraintTop_toBottomOf="@id/view_divider"
+        tools:text="Description" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

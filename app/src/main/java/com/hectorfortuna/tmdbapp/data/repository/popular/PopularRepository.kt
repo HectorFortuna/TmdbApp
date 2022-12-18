@@ -1,8 +1,8 @@
-package com.hectorfortuna.tmdbapp.data.network.repository.popular
+package com.hectorfortuna.tmdbapp.data.repository.popular
 
 import android.graphics.Movie
-import com.hectorfortuna.tmdbapp.data.network.model.moviedetails.MovieDetails
-import com.hectorfortuna.tmdbapp.data.network.model.popular.PopularResponse
+import com.hectorfortuna.tmdbapp.data.model.moviedetails.MovieDetails
+import com.hectorfortuna.tmdbapp.data.model.popular.PopularResponse
 import retrofit2.Response
 
 interface PopularRepository {

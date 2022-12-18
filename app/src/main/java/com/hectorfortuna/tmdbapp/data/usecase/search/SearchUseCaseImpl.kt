@@ -1,8 +1,8 @@
-package com.hectorfortuna.tmdbapp.data.network.usecase.search
+package com.hectorfortuna.tmdbapp.data.usecase.search
 
 import android.util.Log
-import com.hectorfortuna.tmdbapp.data.network.model.popular.PopularResponse
-import com.hectorfortuna.tmdbapp.data.network.repository.popular.PopularRepository
+import com.hectorfortuna.tmdbapp.data.model.popular.PopularResponse
+import com.hectorfortuna.tmdbapp.data.repository.popular.PopularRepository
 import timber.log.Timber
 import javax.inject.Inject
 

@@ -1,7 +1,7 @@
-package com.hectorfortuna.tmdbapp.data.network.usecase.details
+package com.hectorfortuna.tmdbapp.data.usecase.details
 
-import com.hectorfortuna.tmdbapp.data.network.model.moviedetails.MovieDetails
-import com.hectorfortuna.tmdbapp.data.network.repository.MovieDetailsRepository
+import com.hectorfortuna.tmdbapp.data.model.moviedetails.MovieDetails
+import com.hectorfortuna.tmdbapp.data.repository.MovieDetailsRepository
 import javax.inject.Inject
 
 class MovieDetailsUseCaseImpl @Inject constructor(private val repository: MovieDetailsRepository) :

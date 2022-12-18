@@ -9,8 +9,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import com.bumptech.glide.Glide
 import com.hectorfortuna.tmdbapp.data.core.Status
-import com.hectorfortuna.tmdbapp.data.network.model.moviedetails.MovieDetails
-import com.hectorfortuna.tmdbapp.data.network.model.popular.Result
+import com.hectorfortuna.tmdbapp.data.model.moviedetails.MovieDetails
+import com.hectorfortuna.tmdbapp.data.model.popular.Result
 import com.hectorfortuna.tmdbapp.databinding.FragmentDetailsBinding
 import com.hectorfortuna.tmdbapp.ui.details.viewmodel.DetailsViewModel
 import com.hectorfortuna.tmdbapp.util.apiKey
@@ -40,20 +40,19 @@ class DetailsFragment : Fragment() {
     }
 
     private fun observeVMEvents() {
-        viewModel.response.observe(viewLifecycleOwner){
-            if(viewLifecycleOwner.lifecycle.currentState != Lifecycle.State.RESUMED) return@observe
-            when(it.status) {
-                Status.SUCCESS ->{
-                    it.data?.let {
-                        initScreen(it)
+        viewModel.response.observe(viewLifecycleOwner) {
+            if (viewLifecycleOwner.lifecycle.currentState != Lifecycle.State.RESUMED) return@observe
+            when (it.status) {
+                Status.SUCCESS -> {
+                    it.data?.let { details ->
+                        initScreen(details)
                     }
                 }
-                Status.LOADING ->{}
-                Status.ERROR ->{}
+                Status.LOADING -> {}
+                Status.ERROR -> {}
             }
         }
     }
-
 
     private fun initScreen(details: MovieDetails) {
         setDetailTexts(details)
@@ -62,7 +61,13 @@ class DetailsFragment : Fragment() {
 
     private fun setDetailTexts(details: MovieDetails) {
         binding.apply {
-
+            originalTitle.text = details.originalTitle
+            txtDescription.text = details.overView
+            genres.text = details.genres[0].name
+            releaseDate.text = details.releaseDate
+            status.text = details.status
+            spokenLanguage.text = details.spokenLanguages[0].name
+            favouriteButton.text = "FAVORITAR"
         }
     }
 

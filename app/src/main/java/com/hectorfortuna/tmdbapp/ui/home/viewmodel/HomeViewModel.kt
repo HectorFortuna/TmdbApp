@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hectorfortuna.tmdbapp.data.core.State
 import com.hectorfortuna.tmdbapp.data.di.qualifiers.Io
-import com.hectorfortuna.tmdbapp.data.network.model.popular.PopularResponse
-import com.hectorfortuna.tmdbapp.data.network.usecase.popular.PopularUseCase
-import com.hectorfortuna.tmdbapp.data.network.usecase.search.SearchUseCase
+import com.hectorfortuna.tmdbapp.data.model.popular.PopularResponse
+import com.hectorfortuna.tmdbapp.data.usecase.popular.PopularUseCase
+import com.hectorfortuna.tmdbapp.data.usecase.search.SearchUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch

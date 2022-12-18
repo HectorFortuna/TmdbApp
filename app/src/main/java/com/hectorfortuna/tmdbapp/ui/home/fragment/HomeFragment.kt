@@ -14,12 +14,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hectorfortuna.tmdbapp.R
 import com.hectorfortuna.tmdbapp.data.core.BaseFragment
 import com.hectorfortuna.tmdbapp.data.core.Status
-import com.hectorfortuna.tmdbapp.data.network.model.popular.Result
+import com.hectorfortuna.tmdbapp.data.model.popular.Result
 import com.hectorfortuna.tmdbapp.databinding.FragmentHomeBinding
 import com.hectorfortuna.tmdbapp.ui.adapter.home.MovieAdapter
 import com.hectorfortuna.tmdbapp.ui.home.MainActivity
 import com.hectorfortuna.tmdbapp.ui.home.viewmodel.HomeViewModel
 import com.hectorfortuna.tmdbapp.util.CustomDialog
+import com.hectorfortuna.tmdbapp.util.NetworkDialog
 import com.hectorfortuna.tmdbapp.util.apiKey
 import com.hectorfortuna.tmdbapp.util.hasInternet
 import dagger.hilt.android.AndroidEntryPoint
@@ -125,7 +126,6 @@ class HomeFragment : BaseFragment() {
         }
     }
 
-
     private fun setRecyclerView() {
         binding.rvMovie.apply {
             setHasFixedSize(true)
@@ -147,8 +147,6 @@ class HomeFragment : BaseFragment() {
                                 currentPage++
                                 getPopularMovies(currentPage)
                             }
-
-                            if (!hasInternet(context)) {setNetworkDialog()}
 
                         }
                     }

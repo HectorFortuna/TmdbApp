@@ -1,7 +1,7 @@
-package com.hectorfortuna.tmdbapp.data.network.repository.popular
+package com.hectorfortuna.tmdbapp.data.repository.popular
 
 import com.hectorfortuna.tmdbapp.data.network.api.Service
-import com.hectorfortuna.tmdbapp.data.network.model.popular.PopularResponse
+import com.hectorfortuna.tmdbapp.data.model.popular.PopularResponse
 import retrofit2.Response
 import javax.inject.Inject
 
