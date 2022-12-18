@@ -1,15 +1,19 @@
 package com.hectorfortuna.tmdbapp.data.di.module
 
-import com.hectorfortuna.tmdbapp.data.network.repository.MovieDetailsRepository
-import com.hectorfortuna.tmdbapp.data.network.repository.MovieDetailsRepositoryImpl
-import com.hectorfortuna.tmdbapp.data.network.repository.popular.PopularRepository
-import com.hectorfortuna.tmdbapp.data.network.repository.popular.PopularRepositoryImpl
-import com.hectorfortuna.tmdbapp.data.network.usecase.details.MovieDetailsUseCase
-import com.hectorfortuna.tmdbapp.data.network.usecase.details.MovieDetailsUseCaseImpl
-import com.hectorfortuna.tmdbapp.data.network.usecase.popular.PopularUseCase
-import com.hectorfortuna.tmdbapp.data.network.usecase.popular.PopularUseCaseImpl
-import com.hectorfortuna.tmdbapp.data.network.usecase.search.SearchUseCase
-import com.hectorfortuna.tmdbapp.data.network.usecase.search.SearchUseCaseImpl
+import com.hectorfortuna.tmdbapp.data.db.repository.DatabaseRepository
+import com.hectorfortuna.tmdbapp.data.db.repository.DatabaseRepositoryImpl
+import com.hectorfortuna.tmdbapp.data.db.usecase.DatabaseUseCase
+import com.hectorfortuna.tmdbapp.data.db.usecase.DatabaseUseCaseImpl
+import com.hectorfortuna.tmdbapp.data.repository.MovieDetailsRepository
+import com.hectorfortuna.tmdbapp.data.repository.MovieDetailsRepositoryImpl
+import com.hectorfortuna.tmdbapp.data.repository.popular.PopularRepository
+import com.hectorfortuna.tmdbapp.data.repository.popular.PopularRepositoryImpl
+import com.hectorfortuna.tmdbapp.data.usecase.details.MovieDetailsUseCase
+import com.hectorfortuna.tmdbapp.data.usecase.details.MovieDetailsUseCaseImpl
+import com.hectorfortuna.tmdbapp.data.usecase.popular.PopularUseCase
+import com.hectorfortuna.tmdbapp.data.usecase.popular.PopularUseCaseImpl
+import com.hectorfortuna.tmdbapp.data.usecase.search.SearchUseCase
+import com.hectorfortuna.tmdbapp.data.usecase.search.SearchUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -48,4 +52,16 @@ abstract class AppModule {
     abstract fun bindSearchUseCase(
         searchUseCase: SearchUseCaseImpl
     ): SearchUseCase
+
+    @Singleton
+    @Binds
+    abstract fun bindDatabaseRepository(
+        databaseRepository: DatabaseRepositoryImpl
+    ): DatabaseRepository
+
+    @Singleton
+    @Binds
+    abstract fun bindDatabaseUseCase(
+        databaseUseCase: DatabaseUseCaseImpl
+    ): DatabaseUseCase
 }

@@ -19,10 +19,11 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class DetailsFragment : Fragment() {
-    private val viewModel by viewModels<DetailsViewModel>()
     private lateinit var results: Result
-
     private lateinit var binding: FragmentDetailsBinding
+
+    private val viewModel by viewModels<DetailsViewModel>()
+    private var checkCharacter: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,6 +40,23 @@ class DetailsFragment : Fragment() {
         observeVMEvents()
     }
 
+    private fun setFavouriteMovies(favourites: MovieDetails) {
+        with(binding) {
+            favouriteButton.setOnClickListener {
+                checkCharacter = if (checkCharacter) {
+                    viewModel.deleteFavourite(favourites)
+                    favouriteButton.text = "FAVORITAR"
+                    false
+
+                } else {
+                    viewModel.insertFavourite(favourites)
+                    favouriteButton.text = "FAVORITADO"
+                    true
+                }
+            }
+        }
+    }
+
     private fun observeVMEvents() {
         viewModel.response.observe(viewLifecycleOwner) {
             if (viewLifecycleOwner.lifecycle.currentState != Lifecycle.State.RESUMED) return@observe
@@ -52,12 +70,31 @@ class DetailsFragment : Fragment() {
                 Status.ERROR -> {}
             }
         }
+        viewModel.verifySavedMovie.observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    it.data?.let { exist ->
+                        if (exist) {
+                            binding.favouriteButton.text = "FAVORITADO"
+                        } else{
+                            binding.favouriteButton.text = "FAVORITAR"
+                        }
+                        checkCharacter = exist
+                    }
+                }
+                Status.ERROR -> {}
+                Status.LOADING -> {}
+            }
+        }
     }
 
     private fun initScreen(details: MovieDetails) {
+        viewModel.verifySavedMovie(details.id)
         setDetailTexts(details)
         setImage(details)
+        setFavouriteMovies(details)
     }
+
 
     private fun setDetailTexts(details: MovieDetails) {
         binding.apply {
@@ -67,7 +104,6 @@ class DetailsFragment : Fragment() {
             releaseDate.text = details.releaseDate
             status.text = details.status
             spokenLanguage.text = details.spokenLanguages[0].name
-            favouriteButton.text = "FAVORITAR"
         }
     }
 

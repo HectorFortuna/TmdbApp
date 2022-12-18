@@ -33,7 +33,7 @@ data class MovieDetails(
     @SerializedName("overview")
     var overView: String?,
     @SerializedName("popularity")
-    var popularity: Number,
+    var popularity: Float,
     @SerializedName("poster_path")
     var posterPath: String?,
     @SerializedName("production_companies")
@@ -57,7 +57,7 @@ data class MovieDetails(
     @SerializedName("video")
     var video: Boolean,
     @SerializedName("vote_average")
-    var voteAverage: Number,
+    var voteAverage: Float,
     @SerializedName("vote_counter")
     var voteCount: Int
 

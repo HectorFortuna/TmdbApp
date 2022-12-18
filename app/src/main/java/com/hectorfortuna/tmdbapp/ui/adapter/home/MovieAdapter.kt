@@ -1,14 +1,9 @@
 package com.hectorfortuna.tmdbapp.ui.adapter.home
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.hectorfortuna.tmdbapp.databinding.MovieItemBinding
-import com.hectorfortuna.tmdbapp.util.imageUrl
-import com.hectorfortuna.tmdbapp.data.network.model.popular.Result as Result
+import com.hectorfortuna.tmdbapp.data.model.popular.Result
 
 class MovieAdapter(
     private val itemClick: ((item: Result) -> Unit)

@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.hectorfortuna.tmdbapp.databinding.MovieItemBinding
 import com.hectorfortuna.tmdbapp.util.imageUrl
-import com.hectorfortuna.tmdbapp.data.network.model.popular.Result as Result
+import com.hectorfortuna.tmdbapp.data.model.popular.Result as Result
 
 class MovieViewHolder(
     private val movieItemBinding: MovieItemBinding,

@@ -27,11 +27,11 @@ data class Result(
     @SerializedName("backdrop_path")
     val backdropPath: String?,
     @SerializedName("popularity")
-    val popularity: Number,
+    val popularity: Float,
     @SerializedName("vote_count")
     val voteCount: Int,
     @SerializedName("video")
     val video: Boolean,
     @SerializedName("vote_average")
-    val voteAverage: Number
+    val voteAverage: Float
 ) : Parcelable
