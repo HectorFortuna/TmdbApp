@@ -10,7 +10,7 @@ interface MovieDetailsDAO {
     suspend fun insertFavouriteMovies(favourites: MovieDetails)
 
     @Query("SELECT * FROM movie_details_table")
-    fun getAllMovies(): LiveData<MovieDetails>
+    fun getAllMovies(): LiveData<List<MovieDetails>>
 
     @Delete
     suspend fun deleteCharacters(favourites: MovieDetails)

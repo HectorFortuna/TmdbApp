@@ -19,4 +19,13 @@
         android:name="com.hectorfortuna.tmdbapp.ui.details.fragment.DetailsFragment"
         android:label="fragment_details"
         tools:layout="@layout/fragment_details" />
+    <fragment
+        android:id="@+id/favouriteFragment"
+        android:name="com.hectorfortuna.tmdbapp.ui.favourite.fragment.FavouriteFragment"
+        android:label="fragment_favourite"
+        tools:layout="@layout/fragment_favourite" >
+        <action
+            android:id="@+id/action_favouriteFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
 </navigation>

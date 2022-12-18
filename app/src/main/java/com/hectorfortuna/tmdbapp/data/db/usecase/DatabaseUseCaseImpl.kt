@@ -20,7 +20,7 @@ class DatabaseUseCaseImpl @Inject constructor(private val repository: DatabaseRe
     override suspend fun getFavouritesMovies(favouriteId: Int): MovieDetails? =
         repository.getFavouritesMovies(favouriteId)
 
-    override fun getAllMovies(): LiveData<MovieDetails> =
+    override fun getAllMovies(): LiveData<List<MovieDetails>> =
         repository.getAllMovies()
 
 }
