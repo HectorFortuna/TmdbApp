@@ -4,10 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hectorfortuna.tmdbapp.cache.hawk.CacheKeys
 import com.hectorfortuna.tmdbapp.cache.usecase.savecache.SaveCacheUseCase
 import com.hectorfortuna.tmdbapp.core.State
 import com.hectorfortuna.tmdbapp.di.qualifiers.Io
 import com.hectorfortuna.tmdbapp.data.model.popular.PopularResponse
+import com.hectorfortuna.tmdbapp.data.model.popular.Result
 import com.hectorfortuna.tmdbapp.data.usecase.popular.PopularUseCase
 import com.hectorfortuna.tmdbapp.data.usecase.search.SearchUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -61,9 +63,9 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private suspend fun saveInCache(data: com.hectorfortuna.tmdbapp.data.model.popular.Result){
+    private suspend fun saveInCache(data: List<Result>){
         data.let {
-            saveUseCase.saveCache(it,"movies")
+            saveUseCase.saveCache(it, CacheKeys.POPULAR_MOVIES)
         }
     }
 

@@ -2,13 +2,15 @@ package com.hectorfortuna.tmdbapp.cache.hawk
 
 import android.content.Context
 import com.orhanobut.hawk.Hawk
+import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-object ModuleHawk{
-    fun init(context: Context) {
-        Hawk.init(context).build()
-    }
+
+object ModuleHawk {
+
     fun contains(key: String): Boolean = Hawk.contains(key)
 
     fun <T> get(key: String): T = Hawk.get(key)
@@ -21,5 +23,4 @@ object ModuleHawk{
         }
     }
 
-    fun deleteAll() = Hawk.deleteAll()
 }

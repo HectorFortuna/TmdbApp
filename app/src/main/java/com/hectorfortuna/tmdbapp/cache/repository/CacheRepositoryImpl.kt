@@ -2,8 +2,9 @@ package com.hectorfortuna.tmdbapp.cache.repository
 
 import com.hectorfortuna.tmdbapp.cache.hawk.CacheKeys
 import com.hectorfortuna.tmdbapp.cache.hawk.ModuleHawk
+import javax.inject.Inject
 
-class CacheRepositoryImpl(
+class CacheRepositoryImpl @Inject constructor(
     private val hawk: ModuleHawk
 ) : CacheRepository {
     override fun <T> existAndIsNotNull(key: CacheKeys): Boolean {
