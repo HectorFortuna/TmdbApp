@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hectorfortuna.tmdbapp.cache.hawk.CacheKeys
+import com.hectorfortuna.tmdbapp.cache.usecase.containscache.ContainsCacheUseCase
+import com.hectorfortuna.tmdbapp.cache.usecase.getcache.GetCacheUseCase
 import com.hectorfortuna.tmdbapp.cache.usecase.savecache.SaveCacheUseCase
 import com.hectorfortuna.tmdbapp.core.State
 import com.hectorfortuna.tmdbapp.di.qualifiers.Io
@@ -23,6 +25,8 @@ class HomeViewModel @Inject constructor(
     private val useCase: PopularUseCase,
     private val searchUseCase: SearchUseCase,
     private val saveUseCase:SaveCacheUseCase,
+    private val containsUseCase: ContainsCacheUseCase,
+    private val getCacheUseCase: GetCacheUseCase,
     @Io val ioDispatcher: CoroutineDispatcher
 ): ViewModel(){
 
@@ -30,19 +34,22 @@ class HomeViewModel @Inject constructor(
     val response: LiveData<State<PopularResponse>>
         get() = _response
 
-
     private val _search = MutableLiveData<State<PopularResponse>>()
     val search: LiveData<State<PopularResponse>>
         get() = _search
+    private var popularResponse: PopularResponse? = null
 
     fun getPopularMovies(apikey: String , page: Int){
         viewModelScope.launch {
             try {
                 _response.value = State.loading(true)
-                val response = withContext(ioDispatcher){
-                    useCase.getPopularMovies(apikey, page)
+                if(containsUseCase.cacheExistAndIsNotNull<PopularResponse>(CacheKeys.POPULAR_MOVIES)){
+                  popularResponse = getCacheUseCase.getPopular(CacheKeys.POPULAR_MOVIES)
+                } else{
+                    popularResponse = useCase.getPopularMovies(apikey, page)
+                    saveInCache(popularResponse)
                 }
-                _response.value = State.success(response)
+                _response.value = State.success(popularResponse)
             } catch (throwable: Throwable){
                 _response.value = State.error(throwable)
             }
@@ -63,7 +70,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private suspend fun saveInCache(data: List<Result>){
+    private suspend fun saveInCache(data: PopularResponse?){
         data.let {
             saveUseCase.saveCache(it, CacheKeys.POPULAR_MOVIES)
         }

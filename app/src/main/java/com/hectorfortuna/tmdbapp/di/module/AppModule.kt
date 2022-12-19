@@ -2,6 +2,10 @@ package com.hectorfortuna.tmdbapp.di.module
 
 import com.hectorfortuna.tmdbapp.cache.repository.CacheRepository
 import com.hectorfortuna.tmdbapp.cache.repository.CacheRepositoryImpl
+import com.hectorfortuna.tmdbapp.cache.usecase.containscache.ContainsCacheUseCase
+import com.hectorfortuna.tmdbapp.cache.usecase.containscache.ContainsCacheUseCaseImpl
+import com.hectorfortuna.tmdbapp.cache.usecase.getcache.GetCacheUseCase
+import com.hectorfortuna.tmdbapp.cache.usecase.getcache.GetCacheUseCaseImpl
 import com.hectorfortuna.tmdbapp.cache.usecase.savecache.SaveCacheUseCase
 import com.hectorfortuna.tmdbapp.cache.usecase.savecache.SaveCacheUseCaseImpl
 import com.hectorfortuna.tmdbapp.data.db.repository.DatabaseRepository
@@ -74,6 +78,18 @@ abstract class AppModule {
     abstract fun bindCacheRepository(
         cacheRepository: CacheRepositoryImpl
     ): CacheRepository
+
+    @Singleton
+    @Binds
+    abstract fun bindContainsUseCase(
+        cacheUseCase: ContainsCacheUseCaseImpl
+    ): ContainsCacheUseCase
+
+    @Singleton
+    @Binds
+    abstract fun getCacheUseCase(
+        getUseCase: GetCacheUseCaseImpl
+    ): GetCacheUseCase
 
     @Singleton
     @Binds
