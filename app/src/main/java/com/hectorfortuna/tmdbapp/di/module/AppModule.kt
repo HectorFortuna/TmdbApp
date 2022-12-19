@@ -1,5 +1,9 @@
-package com.hectorfortuna.tmdbapp.data.di.module
+package com.hectorfortuna.tmdbapp.di.module
 
+import com.hectorfortuna.tmdbapp.cache.repository.CacheRepository
+import com.hectorfortuna.tmdbapp.cache.repository.CacheRepositoryImpl
+import com.hectorfortuna.tmdbapp.cache.usecase.savecache.SaveCacheUseCase
+import com.hectorfortuna.tmdbapp.cache.usecase.savecache.SaveCacheUseCaseImpl
 import com.hectorfortuna.tmdbapp.data.db.repository.DatabaseRepository
 import com.hectorfortuna.tmdbapp.data.db.repository.DatabaseRepositoryImpl
 import com.hectorfortuna.tmdbapp.data.db.usecase.DatabaseUseCase
@@ -64,4 +68,16 @@ abstract class AppModule {
     abstract fun bindDatabaseUseCase(
         databaseUseCase: DatabaseUseCaseImpl
     ): DatabaseUseCase
+
+    @Singleton
+    @Binds
+    abstract fun bindCacheRepository(
+        cacheRepository: CacheRepositoryImpl
+    ): CacheRepository
+
+    @Singleton
+    @Binds
+    abstract fun bindSaveCacheUseCase(
+        saveCache: SaveCacheUseCaseImpl
+    ): SaveCacheUseCase
 }

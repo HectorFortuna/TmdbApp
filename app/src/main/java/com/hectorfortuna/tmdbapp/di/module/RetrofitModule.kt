@@ -1,4 +1,4 @@
-package com.hectorfortuna.tmdbapp.data.di.module
+package com.hectorfortuna.tmdbapp.di.module
 
 import com.google.gson.GsonBuilder
 import com.hectorfortuna.tmdbapp.data.network.api.Service

@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import com.bumptech.glide.Glide
-import com.hectorfortuna.tmdbapp.data.core.Status
+import com.hectorfortuna.tmdbapp.core.Status
 import com.hectorfortuna.tmdbapp.data.model.moviedetails.MovieDetails
 import com.hectorfortuna.tmdbapp.data.model.popular.Result
 import com.hectorfortuna.tmdbapp.databinding.FragmentDetailsBinding

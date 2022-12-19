@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hectorfortuna.tmdbapp.R
-import com.hectorfortuna.tmdbapp.data.core.BaseFragment
-import com.hectorfortuna.tmdbapp.data.core.Status
+import com.hectorfortuna.tmdbapp.core.BaseFragment
+import com.hectorfortuna.tmdbapp.core.Status
 import com.hectorfortuna.tmdbapp.data.model.popular.Result
 import com.hectorfortuna.tmdbapp.databinding.FragmentHomeBinding
 import com.hectorfortuna.tmdbapp.ui.adapter.home.MovieAdapter

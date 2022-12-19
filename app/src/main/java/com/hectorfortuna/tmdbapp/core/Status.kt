@@ -1,4 +1,4 @@
-package com.hectorfortuna.tmdbapp.data.core
+package com.hectorfortuna.tmdbapp.core
 
 enum class Status {
     SUCCESS,

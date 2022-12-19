@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hectorfortuna.tmdbapp.data.core.State
+import com.hectorfortuna.tmdbapp.core.State
 import com.hectorfortuna.tmdbapp.data.db.usecase.DatabaseUseCase
-import com.hectorfortuna.tmdbapp.data.di.qualifiers.Io
+import com.hectorfortuna.tmdbapp.di.qualifiers.Io
 import com.hectorfortuna.tmdbapp.data.model.moviedetails.MovieDetails
 import com.hectorfortuna.tmdbapp.data.usecase.details.MovieDetailsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel

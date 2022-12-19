@@ -1,4 +1,4 @@
-package com.hectorfortuna.tmdbapp.data.di.module
+package com.hectorfortuna.tmdbapp.di.module
 
 import android.content.Context
 import androidx.room.Room

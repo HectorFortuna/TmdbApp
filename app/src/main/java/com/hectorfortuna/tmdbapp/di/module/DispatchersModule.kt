@@ -1,9 +1,9 @@
-package com.hectorfortuna.tmdbapp.data.di.module
+package com.hectorfortuna.tmdbapp.di.module
 
-import com.hectorfortuna.tmdbapp.data.di.qualifiers.Default
-import com.hectorfortuna.tmdbapp.data.di.qualifiers.Io
-import com.hectorfortuna.tmdbapp.data.di.qualifiers.Main
-import com.hectorfortuna.tmdbapp.data.di.qualifiers.Unconfined
+import com.hectorfortuna.tmdbapp.di.qualifiers.Default
+import com.hectorfortuna.tmdbapp.di.qualifiers.Io
+import com.hectorfortuna.tmdbapp.di.qualifiers.Main
+import com.hectorfortuna.tmdbapp.di.qualifiers.Unconfined
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

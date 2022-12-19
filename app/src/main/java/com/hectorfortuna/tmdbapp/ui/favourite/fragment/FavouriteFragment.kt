@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.hectorfortuna.tmdbapp.R
-import com.hectorfortuna.tmdbapp.data.core.Status
+import com.hectorfortuna.tmdbapp.core.Status
 import com.hectorfortuna.tmdbapp.data.model.moviedetails.MovieDetails
 import com.hectorfortuna.tmdbapp.data.model.popular.Result
 import com.hectorfortuna.tmdbapp.databinding.FragmentFavouriteBinding
@@ -35,7 +35,7 @@ class FavouriteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getPopularMovies(apiKey(), 1)
+
         observeVMEvents()
     }
 
@@ -70,10 +70,7 @@ class FavouriteFragment : Fragment() {
 
     private fun goToDetail() {
         findNavController().navigate(
-            R.id.action_favouriteFragment_to_detailsFragment,
-            Bundle().apply {
-                putParcelable("MOVIES")
-            })
+            R.id.action_favouriteFragment_to_detailsFragment)
     }
 
     private fun deleteCharacters(result: MovieDetails) {

@@ -1,4 +1,4 @@
-package com.hectorfortuna.tmdbapp.data.di.qualifiers
+package com.hectorfortuna.tmdbapp.di.qualifiers
 
 import javax.inject.Qualifier
 
