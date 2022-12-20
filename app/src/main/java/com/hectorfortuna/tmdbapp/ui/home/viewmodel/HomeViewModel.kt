@@ -37,19 +37,16 @@ class HomeViewModel @Inject constructor(
     private val _search = MutableLiveData<State<PopularResponse>>()
     val search: LiveData<State<PopularResponse>>
         get() = _search
-    private var popularResponse: PopularResponse? = null
 
     fun getPopularMovies(apikey: String , page: Int){
         viewModelScope.launch {
             try {
                 _response.value = State.loading(true)
-                if(containsUseCase.cacheExistAndIsNotNull<PopularResponse>(CacheKeys.POPULAR_MOVIES)){
-                  popularResponse = getCacheUseCase.getPopular(CacheKeys.POPULAR_MOVIES)
-                } else{
-                    popularResponse = useCase.getPopularMovies(apikey, page)
-                    saveInCache(popularResponse)
+                val popularResponse = useCase.getPopularMovies(apikey,page)
+                saveInCache(popularResponse)
+                getCacheUseCase.getPopular(CacheKeys.POPULAR_MOVIES).also {
+                    _response.value = State.success(it)
                 }
-                _response.value = State.success(popularResponse)
             } catch (throwable: Throwable){
                 _response.value = State.error(throwable)
             }
