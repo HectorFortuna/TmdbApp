@@ -8,4 +8,5 @@ interface DatabaseRepository {
     suspend fun deleteFavourite(favourites: MovieDetails)
     suspend fun getFavouritesMovies(favouriteId: Int): MovieDetails?
     fun getAllMovies(): LiveData<List<MovieDetails>>
+    fun getFavouriteMovieById(id: Int): MovieDetails?
 }

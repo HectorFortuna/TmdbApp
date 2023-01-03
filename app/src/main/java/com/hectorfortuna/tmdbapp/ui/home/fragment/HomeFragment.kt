@@ -33,7 +33,7 @@ class HomeFragment : BaseFragment() {
         findNavController().navigate(
             R.id.action_homeFragment_to_detailsFragment,
             Bundle().apply {
-                putParcelable("MOVIES", it)
+                putInt("MOVIES", it.id)
             }
         )
     }

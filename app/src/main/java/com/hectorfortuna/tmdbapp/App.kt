@@ -12,6 +12,6 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
             Timber.plant(Timber.DebugTree())
-            Hawk.init(this)
+            ModuleHawk.init(this)
     }
 }

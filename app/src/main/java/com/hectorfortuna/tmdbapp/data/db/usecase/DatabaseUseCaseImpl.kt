@@ -23,4 +23,7 @@ class DatabaseUseCaseImpl @Inject constructor(private val repository: DatabaseRe
     override fun getAllMovies(): LiveData<List<MovieDetails>> =
         repository.getAllMovies()
 
+    override fun getFavouriteMovieById(id: Int): MovieDetails? =
+        repository.getFavouriteMovieById(id)
+
 }

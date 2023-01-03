@@ -8,10 +8,11 @@ import com.hectorfortuna.tmdbapp.data.model.moviedetails.MovieDetails
 import com.hectorfortuna.tmdbapp.data.model.popular.Result
 import com.hectorfortuna.tmdbapp.databinding.MovieItemBinding
 import com.hectorfortuna.tmdbapp.util.imageUrl
+import kotlin.reflect.KFunction0
 
 class FavouriteAdapter(
     private val results: List<MovieDetails>,
-    private val itemClick: () -> Unit,
+    private val itemClick: ((item:MovieDetails) -> Unit),
     private val longClick: ((item: MovieDetails) -> Unit)? = null
 ) :
     RecyclerView.Adapter<FavouriteAdapter.FavouriteViewHolder>() {
@@ -30,7 +31,7 @@ class FavouriteAdapter(
 
     class FavouriteViewHolder(
         private val binding: MovieItemBinding,
-        private val itemClick: () -> Unit,
+        private val itemClick: (item: MovieDetails) -> Unit,
         private val longClick: ((item: MovieDetails) -> Unit)?
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bindView(movies: MovieDetails) {
@@ -44,7 +45,7 @@ class FavouriteAdapter(
                     .into(imgPosterMovie)
 
                 itemView.setOnClickListener {
-                    itemClick.invoke()
+                    itemClick.invoke(movies)
                 }
 
                 itemView.setOnLongClickListener {

@@ -17,4 +17,7 @@ interface MovieDetailsDAO {
 
     @Query("SELECT * FROM movie_details_table WHERE id = :favouriteId ")
     suspend fun getFavouriteMovies(favouriteId: Int): MovieDetails?
+
+    @Query("SELECT * FROM movie_details_table WHERE id = :id ")
+    fun getFavouriteMovieById(id: Int): MovieDetails?
 }

@@ -11,12 +11,10 @@ import androidx.navigation.fragment.findNavController
 import com.hectorfortuna.tmdbapp.R
 import com.hectorfortuna.tmdbapp.core.Status
 import com.hectorfortuna.tmdbapp.data.model.moviedetails.MovieDetails
-import com.hectorfortuna.tmdbapp.data.model.popular.Result
 import com.hectorfortuna.tmdbapp.databinding.FragmentFavouriteBinding
 import com.hectorfortuna.tmdbapp.ui.favourite.adapter.FavouriteAdapter
 import com.hectorfortuna.tmdbapp.ui.favourite.viewmodel.FavouriteViewModel
 import com.hectorfortuna.tmdbapp.util.CustomDialog
-import com.hectorfortuna.tmdbapp.util.apiKey
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -34,8 +32,6 @@ class FavouriteFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
         observeVMEvents()
     }
 
@@ -50,6 +46,7 @@ class FavouriteFragment : Fragment() {
                 }
             }
         }
+
         viewModel.delete.observe(viewLifecycleOwner) { state ->
             when (state.status) {
                 Status.SUCCESS -> {
@@ -68,9 +65,21 @@ class FavouriteFragment : Fragment() {
         movieAdapter = FavouriteAdapter(result, ::goToDetail, ::deleteCharacters)
     }
 
-    private fun goToDetail() {
+    private fun goToDetail(result :MovieDetails) {
         findNavController().navigate(
-            R.id.action_favouriteFragment_to_detailsFragment)
+            R.id.action_favouriteFragment_to_detailsFragment,
+        Bundle().apply {
+            putInt("MOVIES", result.id)
+        }
+            )
+    }
+
+    private fun setRecyclerView(result: List<MovieDetails>) {
+        setAdapter(result)
+        binding.rvMovie.apply {
+            setHasFixedSize(true)
+            adapter = movieAdapter
+        }
     }
 
     private fun deleteCharacters(result: MovieDetails) {
@@ -84,14 +93,6 @@ class FavouriteFragment : Fragment() {
                 viewModel.deleteFavourite(result)
             }
         }.show(parentFragmentManager, "Dialog")
-    }
-
-    private fun setRecyclerView(result: List<MovieDetails>) {
-        setAdapter(result)
-        binding.rvMovie.apply {
-            setHasFixedSize(true)
-            adapter = movieAdapter
-        }
     }
 
 }

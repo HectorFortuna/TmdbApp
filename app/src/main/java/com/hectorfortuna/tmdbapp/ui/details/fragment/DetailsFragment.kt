@@ -19,7 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class DetailsFragment : Fragment() {
-    private lateinit var results: Result
+    private var results: Int = 0
     private lateinit var binding: FragmentDetailsBinding
 
     private val viewModel by viewModels<DetailsViewModel>()
@@ -35,8 +35,8 @@ class DetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        results = arguments?.getParcelable<Result>("MOVIES") as Result
-        viewModel.getMovieDetails(apiKey(), results.id)
+        results = arguments?.getInt("MOVIES") ?: 0
+        viewModel.getMovieDetails(apiKey(), results)
         observeVMEvents()
     }
 

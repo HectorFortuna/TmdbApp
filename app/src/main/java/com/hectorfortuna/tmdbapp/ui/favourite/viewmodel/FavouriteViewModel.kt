@@ -20,7 +20,6 @@ import javax.inject.Inject
 @HiltViewModel
 class FavouriteViewModel @Inject constructor(
     private val useCase: DatabaseUseCase,
-    private val popularUseCase: PopularUseCase,
     @Io val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
@@ -32,19 +31,7 @@ class FavouriteViewModel @Inject constructor(
     val response: LiveData<State<PopularResponse>>
         get() = _response
 
-    fun getPopularMovies(apikey: String , page: Int){
-        viewModelScope.launch {
-            try {
-                _response.value = State.loading(true)
-                val response = withContext(ioDispatcher){
-                    popularUseCase.getPopularMovies(apikey, page)
-                }
-                _response.value = State.success(response)
-            } catch (throwable: Throwable){
-                _response.value = State.error(throwable)
-            }
-        }
-    }
+    fun getFavouritesMovies(id: Int) = useCase.getFavouriteMovieById(id)
 
     fun getMovies() = useCase.getAllMovies()
 

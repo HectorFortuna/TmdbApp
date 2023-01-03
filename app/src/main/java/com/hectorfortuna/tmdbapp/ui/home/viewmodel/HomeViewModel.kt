@@ -24,11 +24,11 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val useCase: PopularUseCase,
     private val searchUseCase: SearchUseCase,
-    private val saveUseCase:SaveCacheUseCase,
+    private val saveUseCase: SaveCacheUseCase,
     private val containsUseCase: ContainsCacheUseCase,
     private val getCacheUseCase: GetCacheUseCase,
     @Io val ioDispatcher: CoroutineDispatcher
-): ViewModel(){
+) : ViewModel() {
 
     private val _response = MutableLiveData<State<PopularResponse>>()
     val response: LiveData<State<PopularResponse>>
@@ -38,36 +38,38 @@ class HomeViewModel @Inject constructor(
     val search: LiveData<State<PopularResponse>>
         get() = _search
 
-    fun getPopularMovies(apikey: String , page: Int){
+    fun getPopularMovies(apikey: String, page: Int) {
         viewModelScope.launch {
             try {
                 _response.value = State.loading(true)
-                val popularResponse = useCase.getPopularMovies(apikey,page)
+                val popularResponse = useCase.getPopularMovies(apikey, page)
                 saveInCache(popularResponse)
-                getCacheUseCase.getPopular(CacheKeys.POPULAR_MOVIES).also {
-                    _response.value = State.success(it)
+                if (containsUseCase.cacheExistAndIsNotNull<PopularResponse>(CacheKeys.POPULAR_MOVIES)) {
+                    getCacheUseCase.getPopular(CacheKeys.POPULAR_MOVIES).also {
+                        _response.value = State.success(it)
+                    }
                 }
-            } catch (throwable: Throwable){
+            } catch (throwable: Throwable) {
                 _response.value = State.error(throwable)
             }
         }
     }
 
-    fun searchMovie(apikey: String, query: String){
+    fun searchMovie(apikey: String, query: String) {
         viewModelScope.launch {
             try {
                 _search.value = State.loading(true)
-                val searchResponse = withContext(ioDispatcher){
+                val searchResponse = withContext(ioDispatcher) {
                     searchUseCase.searchMovie(apikey, query)
                 }
                 _search.value = State.success(searchResponse)
-            } catch (throwable: Throwable){
+            } catch (throwable: Throwable) {
                 _search.value = State.error(throwable)
             }
         }
     }
 
-    private suspend fun saveInCache(data: PopularResponse?){
+    private suspend fun saveInCache(data: PopularResponse?) {
         data.let {
             saveUseCase.saveCache(it, CacheKeys.POPULAR_MOVIES)
         }

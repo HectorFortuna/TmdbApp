@@ -1,9 +1,14 @@
 package com.hectorfortuna.tmdbapp.cache.hawk
 
+import android.content.Context
 import com.orhanobut.hawk.Hawk
 
 
 object ModuleHawk {
+
+    fun init(context:Context){
+        Hawk.init(context).build()
+    }
 
     fun contains(key: String): Boolean = Hawk.contains(key)
 

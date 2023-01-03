@@ -20,4 +20,8 @@ class DatabaseRepositoryImpl @Inject constructor(private val dao: MovieDetailsDA
 
     override fun getAllMovies(): LiveData<List<MovieDetails>> =
         dao.getAllMovies()
+
+    override fun getFavouriteMovieById(id: Int): MovieDetails? =
+        dao.getFavouriteMovieById(id)
+
 }
