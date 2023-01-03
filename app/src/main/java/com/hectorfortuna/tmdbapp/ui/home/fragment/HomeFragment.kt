@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hectorfortuna.tmdbapp.R
 import com.hectorfortuna.tmdbapp.core.BaseFragment
 import com.hectorfortuna.tmdbapp.core.Status
+import com.hectorfortuna.tmdbapp.core.ViewManager
+import com.hectorfortuna.tmdbapp.core.network.ConnectivityWatcher
 import com.hectorfortuna.tmdbapp.data.model.popular.Result
 import com.hectorfortuna.tmdbapp.databinding.FragmentHomeBinding
 import com.hectorfortuna.tmdbapp.ui.adapter.home.MovieAdapter
@@ -38,7 +40,6 @@ class HomeFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -46,7 +47,8 @@ class HomeFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setSearchRecyclerView()
-        checkConnection()
+        checkInternetConnection()
+        getPopularMovies(currentPage)
         observeVMEvents()
         setRecyclerView()
         setupToolbar()
@@ -60,13 +62,23 @@ class HomeFragment : BaseFragment() {
         }
     }
 
-    private fun goToDetails(result: Result){
-            findNavController().navigate(
-                R.id.action_homeFragment_to_detailsFragment,
-                Bundle().apply {
-                    putInt("MOVIES", result.id)
-                }
-            )
+    private fun checkInternetConnection(){
+            if (ViewManager.networkFavouriteState == false) {
+                setNetworkDialog()
+            }
+        }
+
+    private fun goToDetails(result: Result) {
+       if(ViewManager.networkFavouriteState == true) {
+           findNavController().navigate(
+               R.id.action_homeFragment_to_detailsFragment,
+               Bundle().apply {
+                   putInt("MOVIES", result.id)
+               }
+           )
+       }else{
+           setNetworkDialog()
+       }
 
     }
 
@@ -82,7 +94,11 @@ class HomeFragment : BaseFragment() {
             textNo = "Cancelar"
         ).apply {
             setListener {
-                checkConnection()
+                if(ViewManager.networkFavouriteState == true){
+                    getPopularMovies(currentPage)
+                }else{
+                    setNetworkDialog()
+                }
             }
         }.show(parentFragmentManager, "Connection")
     }

@@ -31,8 +31,6 @@ class FavouriteViewModel @Inject constructor(
     val response: LiveData<State<PopularResponse>>
         get() = _response
 
-    fun getFavouritesMovies(id: Int) = useCase.getFavouriteMovieById(id)
-
     fun getMovies() = useCase.getAllMovies()
 
     fun deleteFavourite(favourites: MovieDetails) =

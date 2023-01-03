@@ -6,10 +6,10 @@ import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class CustomDialog (
-    private val title: String,
-    private val message: String,
-    private val textYes: String,
-    private val textNo: String
+    private val title: String? = null,
+    private val message: String? = null,
+    private val textYes: String? = null,
+    private val textNo: String? = null
 ) : DialogFragment() {
 
     private var yesListener: (() -> Unit)? = null

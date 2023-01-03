@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.hectorfortuna.tmdbapp.R
 import com.hectorfortuna.tmdbapp.core.Status
+import com.hectorfortuna.tmdbapp.core.ViewManager
 import com.hectorfortuna.tmdbapp.data.model.moviedetails.MovieDetails
 import com.hectorfortuna.tmdbapp.databinding.FragmentFavouriteBinding
 import com.hectorfortuna.tmdbapp.ui.favourite.adapter.FavouriteAdapter
@@ -66,11 +67,11 @@ class FavouriteFragment : Fragment() {
     }
 
     private fun goToDetail(result :MovieDetails) {
-        findNavController().navigate(
-            R.id.action_favouriteFragment_to_detailsFragment,
-        Bundle().apply {
-            putInt("MOVIES", result.id)
-        }
+            findNavController().navigate(
+                R.id.action_favouriteFragment_to_detailsFragment,
+                Bundle().apply {
+                    putInt("MOVIES", result.id)
+                }
             )
     }
 

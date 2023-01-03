@@ -4,18 +4,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.HandlerCompat.postDelayed
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.hectorfortuna.tmdbapp.R
 import com.hectorfortuna.tmdbapp.core.Status
+import com.hectorfortuna.tmdbapp.core.ViewManager
 import com.hectorfortuna.tmdbapp.data.model.moviedetails.MovieDetails
-import com.hectorfortuna.tmdbapp.data.model.popular.Result
 import com.hectorfortuna.tmdbapp.databinding.FragmentDetailsBinding
 import com.hectorfortuna.tmdbapp.ui.details.viewmodel.DetailsViewModel
+import com.hectorfortuna.tmdbapp.util.DetailsDialog
 import com.hectorfortuna.tmdbapp.util.apiKey
 import com.hectorfortuna.tmdbapp.util.imageUrl
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 
 @AndroidEntryPoint
 class DetailsFragment : Fragment() {
@@ -36,8 +41,22 @@ class DetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         results = arguments?.getInt("MOVIES") ?: 0
-        viewModel.getMovieDetails(apiKey(), results)
+        if(ViewManager.networkFavouriteState == true) {
+            viewModel.getMovieDetails(apiKey(), results)
+        } else{
+            setDialog()
+        }
         observeVMEvents()
+    }
+
+    private fun setDialog(){
+        DetailsDialog().apply {
+            setListener {
+                findNavController().navigate(
+                    R.id.homeFragment
+                )
+            }
+        }.show(parentFragmentManager, "Dialog")
     }
 
     private fun setFavouriteMovies(favourites: MovieDetails) {

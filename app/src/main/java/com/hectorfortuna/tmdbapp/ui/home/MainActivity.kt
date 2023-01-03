@@ -6,6 +6,8 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.hectorfortuna.tmdbapp.R
+import com.hectorfortuna.tmdbapp.core.ViewManager
+import com.hectorfortuna.tmdbapp.core.network.ConnectivityWatcher
 import com.hectorfortuna.tmdbapp.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -13,6 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
+    private lateinit var connectivityWatcher: ConnectivityWatcher
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,6 +28,11 @@ class MainActivity : AppCompatActivity() {
         navController = navHostFragment.navController
         binding.bottomNavigation.setupWithNavController(navController)
         navController.previousBackStackEntry
+
+        connectivityWatcher = ConnectivityWatcher(this)
+        connectivityWatcher.observeForever() { networkState ->
+            ViewManager.networkFavouriteState = networkState
+        }
 
     }
 
