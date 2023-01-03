@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuProvider
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
@@ -20,7 +19,6 @@ import com.hectorfortuna.tmdbapp.ui.adapter.home.MovieAdapter
 import com.hectorfortuna.tmdbapp.ui.home.MainActivity
 import com.hectorfortuna.tmdbapp.ui.home.viewmodel.HomeViewModel
 import com.hectorfortuna.tmdbapp.util.CustomDialog
-import com.hectorfortuna.tmdbapp.util.NetworkDialog
 import com.hectorfortuna.tmdbapp.util.apiKey
 import com.hectorfortuna.tmdbapp.util.hasInternet
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,14 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class HomeFragment : BaseFragment() {
     private val viewModel by viewModels<HomeViewModel>()
 
-    private val movieAdapter = MovieAdapter() {
-        findNavController().navigate(
-            R.id.action_homeFragment_to_detailsFragment,
-            Bundle().apply {
-                putInt("MOVIES", it.id)
-            }
-        )
-    }
+    private val movieAdapter = MovieAdapter(::goToDetails)
 
     private var currentPage: Int = 1
     private var resultList = mutableListOf<Result>()
@@ -67,6 +58,16 @@ class HomeFragment : BaseFragment() {
         } else {
             setNetworkDialog()
         }
+    }
+
+    private fun goToDetails(result: Result){
+            findNavController().navigate(
+                R.id.action_homeFragment_to_detailsFragment,
+                Bundle().apply {
+                    putInt("MOVIES", result.id)
+                }
+            )
+
     }
 
     private fun searchMovie(query: String) {
