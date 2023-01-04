@@ -14,7 +14,6 @@ import com.hectorfortuna.tmdbapp.R
 import com.hectorfortuna.tmdbapp.core.BaseFragment
 import com.hectorfortuna.tmdbapp.core.Status
 import com.hectorfortuna.tmdbapp.core.ViewManager
-import com.hectorfortuna.tmdbapp.core.network.ConnectivityWatcher
 import com.hectorfortuna.tmdbapp.data.model.popular.Result
 import com.hectorfortuna.tmdbapp.databinding.FragmentHomeBinding
 import com.hectorfortuna.tmdbapp.ui.adapter.home.MovieAdapter
