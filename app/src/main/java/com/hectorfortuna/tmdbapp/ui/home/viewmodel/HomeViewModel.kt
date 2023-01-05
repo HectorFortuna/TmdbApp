@@ -11,7 +11,6 @@ import com.hectorfortuna.tmdbapp.cache.usecase.savecache.SaveCacheUseCase
 import com.hectorfortuna.tmdbapp.core.State
 import com.hectorfortuna.tmdbapp.di.qualifiers.Io
 import com.hectorfortuna.tmdbapp.data.model.popular.PopularResponse
-import com.hectorfortuna.tmdbapp.data.model.popular.Result
 import com.hectorfortuna.tmdbapp.data.usecase.popular.PopularUseCase
 import com.hectorfortuna.tmdbapp.data.usecase.search.SearchUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -42,10 +41,12 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 _response.value = State.loading(true)
-                val popularResponse = useCase.getPopularMovies(apikey, page)
-                saveInCache(popularResponse)
-                if (containsUseCase.cacheExistAndIsNotNull<PopularResponse>(CacheKeys.POPULAR_MOVIES)) {
-                    getCacheUseCase.getPopular(CacheKeys.POPULAR_MOVIES).also {
+                if (shouldGetFromCache(page)) {
+                    val apiResponse = useCase.getPopularMovies(apikey, page)
+                    shouldSaveInCache(page, apiResponse)
+                    _response.value = State.success(apiResponse)
+                } else {
+                    getFromCache().let {
                         _response.value = State.success(it)
                     }
                 }
@@ -69,10 +70,30 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    private fun shouldGetFromCache(page: Int): Boolean{
+        val isInCache = containsUseCase.cacheExistAndIsNotNull<PopularResponse>(CacheKeys.POPULAR_MOVIES)
+        if(page == 1 && !isInCache){
+            return true
+        } else if(page == 1 && isInCache){
+            return false
+        } else{
+            return true
+        }
+    }
+
+    private suspend fun shouldSaveInCache(page: Int, data: PopularResponse?) {
+        if (page == 1) {
+            saveInCache(data)
+        }
+    }
+
     private suspend fun saveInCache(data: PopularResponse?) {
         data.let {
             saveUseCase.saveCache(it, CacheKeys.POPULAR_MOVIES)
         }
     }
+
+    private suspend fun getFromCache() =
+        getCacheUseCase.getPopular(CacheKeys.POPULAR_MOVIES)
 
 }

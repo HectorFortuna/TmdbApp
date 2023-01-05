@@ -4,12 +4,10 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuProvider
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.hectorfortuna.tmdbapp.R
 import com.hectorfortuna.tmdbapp.core.BaseFragment
 import com.hectorfortuna.tmdbapp.core.Status
@@ -25,15 +23,17 @@ import com.hectorfortuna.tmdbapp.util.hasInternet
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeFragment : BaseFragment() {
+class HomeFragment : Fragment() {
     private val viewModel by viewModels<HomeViewModel>()
 
-    private val movieAdapter = MovieAdapter(::goToDetails)
+    private val movieAdapter = MovieAdapter(::goToDetails, ::listChanged)
 
     private var currentPage: Int = 1
     private var resultList = mutableListOf<Result>()
 
     private lateinit var binding: FragmentHomeBinding
+
+    private var apiRequest: Boolean? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,37 +52,33 @@ class HomeFragment : BaseFragment() {
         setRecyclerView()
         setupToolbar()
     }
-
-    override fun checkConnection() {
-        if (hasInternet(context)) {
-            getPopularMovies(currentPage)
-        } else {
+    private fun checkInternetConnection() {
+        if (ViewManager.networkFavouriteState == false) {
             setNetworkDialog()
         }
     }
 
-    private fun checkInternetConnection(){
-            if (ViewManager.networkFavouriteState == false) {
-                setNetworkDialog()
-            }
-        }
-
     private fun goToDetails(result: Result) {
-       if(ViewManager.networkFavouriteState == true) {
-           findNavController().navigate(
-               R.id.action_homeFragment_to_detailsFragment,
-               Bundle().apply {
-                   putInt("MOVIES", result.id)
-               }
-           )
-       }else{
-           setNetworkDialog()
-       }
+        if (ViewManager.networkFavouriteState == true) {
+            findNavController().navigate(
+                R.id.action_homeFragment_to_detailsFragment,
+                Bundle().apply {
+                    putInt("MOVIES", result.id)
+                }
+            )
+        } else {
+            setNetworkDialog()
+        }
 
     }
 
     private fun searchMovie(query: String) {
         viewModel.searchMovie(apiKey(), query)
+    }
+
+    private fun listChanged(){
+        currentPage++
+        viewModel.getPopularMovies(apiKey(),currentPage)
     }
 
     private fun setNetworkDialog() {
@@ -93,9 +89,9 @@ class HomeFragment : BaseFragment() {
             textNo = "Cancelar"
         ).apply {
             setListener {
-                if(ViewManager.networkFavouriteState == true){
+                if (ViewManager.networkFavouriteState == true) {
                     getPopularMovies(currentPage)
-                }else{
+                } else {
                     setNetworkDialog()
                 }
             }
@@ -108,16 +104,20 @@ class HomeFragment : BaseFragment() {
 
     private fun observeVMEvents() {
         viewModel.response.observe(viewLifecycleOwner) {
-            if (viewLifecycleOwner.lifecycle.currentState != Lifecycle.State.RESUMED) return@observe
             when (it.status) {
-                Status.LOADING -> {}
+                Status.LOADING -> {
+                    apiRequest = true
+                }
                 Status.SUCCESS -> {
                     it.data?.let { response ->
+                        apiRequest = false
                         resultList.addAll(response.result)
-                        movieAdapter.submitList(resultList)
+                        movieAdapter.submitList(resultList.toMutableList())
                     }
                 }
-                Status.ERROR -> {}
+                Status.ERROR -> {
+                    setNetworkDialog()
+                }
             }
         }
 
@@ -147,27 +147,6 @@ class HomeFragment : BaseFragment() {
             setHasFixedSize(true)
             adapter = movieAdapter
 
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
-
-                    if (dy > 0) {
-                        recyclerView.layoutManager?.let {
-                            val visibleItemCount = it.childCount
-                            val totalItemCount = (layoutManager as GridLayoutManager).itemCount
-                            val pastVisibleItems =
-                                (layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
-
-                            if ((visibleItemCount + totalItemCount) >= pastVisibleItems) {
-                                currentPage++
-                                getPopularMovies(currentPage)
-                            }
-
-                        }
-                    }
-                }
-            })
         }
     }
 
