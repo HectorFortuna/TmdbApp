@@ -9,7 +9,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import com.hectorfortuna.tmdbapp.R
-import com.hectorfortuna.tmdbapp.core.BaseFragment
 import com.hectorfortuna.tmdbapp.core.Status
 import com.hectorfortuna.tmdbapp.core.ViewManager
 import com.hectorfortuna.tmdbapp.data.model.popular.Result
@@ -19,7 +18,6 @@ import com.hectorfortuna.tmdbapp.ui.home.MainActivity
 import com.hectorfortuna.tmdbapp.ui.home.viewmodel.HomeViewModel
 import com.hectorfortuna.tmdbapp.util.CustomDialog
 import com.hectorfortuna.tmdbapp.util.apiKey
-import com.hectorfortuna.tmdbapp.util.hasInternet
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -33,7 +31,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
 
-    private var apiRequest: Boolean? = null
+    private var isSearchView: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,6 +50,7 @@ class HomeFragment : Fragment() {
         setRecyclerView()
         setupToolbar()
     }
+
     private fun checkInternetConnection() {
         if (ViewManager.networkFavouriteState == false) {
             setNetworkDialog()
@@ -73,12 +72,15 @@ class HomeFragment : Fragment() {
     }
 
     private fun searchMovie(query: String) {
+        isSearchView
         viewModel.searchMovie(apiKey(), query)
     }
 
-    private fun listChanged(){
-        currentPage++
-        viewModel.getPopularMovies(apiKey(),currentPage)
+    private fun listChanged() {
+        if (!isSearchView) {
+            currentPage++
+            viewModel.getPopularMovies(apiKey(), currentPage)
+        }
     }
 
     private fun setNetworkDialog() {
@@ -106,13 +108,13 @@ class HomeFragment : Fragment() {
         viewModel.response.observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.LOADING -> {
-                    apiRequest = true
+
                 }
                 Status.SUCCESS -> {
                     it.data?.let { response ->
-                        apiRequest = false
                         resultList.addAll(response.result)
                         movieAdapter.submitList(resultList.toMutableList())
+                        isSearchView = false
                     }
                 }
                 Status.ERROR -> {
@@ -128,6 +130,7 @@ class HomeFragment : Fragment() {
                 Status.SUCCESS -> {
                     state.data?.let {
                         movieAdapter.submitList(it.result)
+                        isSearchView = true
                     }
                 }
                 Status.ERROR -> {}

@@ -72,13 +72,9 @@ class HomeViewModel @Inject constructor(
 
     private fun shouldGetFromCache(page: Int): Boolean{
         val isInCache = containsUseCase.cacheExistAndIsNotNull<PopularResponse>(CacheKeys.POPULAR_MOVIES)
-        if(page == 1 && !isInCache){
-            return true
-        } else if(page == 1 && isInCache){
-            return false
-        } else{
-            return true
-        }
+        return if(page == 1 && !isInCache){
+            true
+        } else !(page == 1 && isInCache)
     }
 
     private suspend fun shouldSaveInCache(page: Int, data: PopularResponse?) {
