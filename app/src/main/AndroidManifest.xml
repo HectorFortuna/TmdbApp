@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -15,15 +16,23 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TmdbApp"
         tools:targetApi="31">
+
         <activity
-            android:name=".ui.home.MainActivity"
-            android:exported="true">
+            android:name=".ui.splash.SplashScreenActivity"
+            android:exported="true"
+            android:theme="@style/SplashScreenTheme.TmdbApp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".ui.home.MainActivity"
+            android:exported="true">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
