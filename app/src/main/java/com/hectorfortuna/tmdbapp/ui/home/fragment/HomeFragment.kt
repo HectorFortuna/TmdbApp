@@ -19,6 +19,7 @@ import com.hectorfortuna.tmdbapp.ui.home.viewmodel.HomeViewModel
 import com.hectorfortuna.tmdbapp.util.CustomDialog
 import com.hectorfortuna.tmdbapp.util.apiKey
 import dagger.hilt.android.AndroidEntryPoint
+import okhttp3.internal.notify
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -32,6 +33,7 @@ class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
 
     private var isSearchView: Boolean = false
+    private var search: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -113,12 +115,11 @@ class HomeFragment : Fragment() {
     private fun observeVMEvents() {
         viewModel.response.observe(viewLifecycleOwner) {
             when (it.status) {
-                Status.LOADING -> {
-
-                }
+                Status.LOADING -> {}
                 Status.SUCCESS -> {
                     it.data?.let { response ->
-                        resultList.addAll(response.result)
+                        if(isSearchView) resultList.clear()
+                        if (response.result != resultList) resultList.addAll(response.result)
                         movieAdapter.notifyDataSetChanged()
                         isSearchView = false
                     }
@@ -130,13 +131,14 @@ class HomeFragment : Fragment() {
         }
 
         viewModel.search.observe(viewLifecycleOwner) { state ->
-            if (viewLifecycleOwner.lifecycle.currentState != Lifecycle.State.RESUMED) return@observe
             when (state.status) {
                 Status.LOADING -> {}
                 Status.SUCCESS -> {
                     state.data?.let {
-                        setSearchRecyclerView(it.result)
                         isSearchView = true
+                        resultList.clear()
+                        resultList.addAll(it.result)
+                        movieAdapter.notifyDataSetChanged()
                     }
                 }
                 Status.ERROR -> {}
@@ -144,13 +146,13 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun setSearchRecyclerView(movieList: List<Result>) {
-        movieAdapter = MovieAdapterRecyclerView(movieList,::goToDetails)
-        binding.rvMovie.apply {
-            setHasFixedSize(true)
-            adapter = movieAdapter
-        }
-    }
+//    private fun setSearchRecyclerView(movieList: List<Result>) {
+//        movieAdapter = MovieAdapterRecyclerView(movieList,::goToDetails)
+//        binding.rvMovie.apply {
+//            setHasFixedSize(true)
+//            adapter = movieAdapter
+//        }
+//    }
 
     private fun setAdapter() {
         movieAdapter = MovieAdapterRecyclerView(resultList,::goToDetails,::listChanged)
@@ -188,7 +190,7 @@ class HomeFragment : Fragment() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 when (newText) {
-                    "" -> getPopularMovies(1)
+                    "" -> getPopularMovies(currentPage)
                     else -> searchMovie(newText.toString())
                 }
                 return false
