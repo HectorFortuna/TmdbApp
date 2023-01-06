@@ -13,7 +13,7 @@ import com.hectorfortuna.tmdbapp.core.Status
 import com.hectorfortuna.tmdbapp.core.ViewManager
 import com.hectorfortuna.tmdbapp.data.model.popular.Result
 import com.hectorfortuna.tmdbapp.databinding.FragmentHomeBinding
-import com.hectorfortuna.tmdbapp.ui.adapter.home.MovieAdapter
+import com.hectorfortuna.tmdbapp.ui.adapter.MovieAdapterRecyclerView
 import com.hectorfortuna.tmdbapp.ui.home.MainActivity
 import com.hectorfortuna.tmdbapp.ui.home.viewmodel.HomeViewModel
 import com.hectorfortuna.tmdbapp.util.CustomDialog
@@ -24,7 +24,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class HomeFragment : Fragment() {
     private val viewModel by viewModels<HomeViewModel>()
 
-    private val movieAdapter = MovieAdapter(::goToDetails, ::listChanged)
+    private lateinit var movieAdapter: MovieAdapterRecyclerView
 
     private var currentPage: Int = 1
     private var resultList = mutableListOf<Result>()
@@ -37,15 +37,15 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setSearchRecyclerView()
         checkInternetConnection()
-        getPopularMovies(currentPage)
+        getPopularMovies()
         observeVMEvents()
         setRecyclerView()
         setupToolbar()
@@ -69,6 +69,12 @@ class HomeFragment : Fragment() {
             setNetworkDialog()
         }
 
+    }
+
+    private fun getPopularMovies() {
+        if (currentPage == 1) {
+            getPopularMovies(currentPage)
+        }
     }
 
     private fun searchMovie(query: String) {
@@ -113,7 +119,7 @@ class HomeFragment : Fragment() {
                 Status.SUCCESS -> {
                     it.data?.let { response ->
                         resultList.addAll(response.result)
-                        movieAdapter.submitList(resultList.toMutableList())
+                        movieAdapter.notifyDataSetChanged()
                         isSearchView = false
                     }
                 }
@@ -129,7 +135,7 @@ class HomeFragment : Fragment() {
                 Status.LOADING -> {}
                 Status.SUCCESS -> {
                     state.data?.let {
-                        movieAdapter.submitList(it.result)
+                        setSearchRecyclerView(it.result)
                         isSearchView = true
                     }
                 }
@@ -138,18 +144,23 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun setSearchRecyclerView() {
+    private fun setSearchRecyclerView(movieList: List<Result>) {
+        movieAdapter = MovieAdapterRecyclerView(movieList,::goToDetails)
         binding.rvMovie.apply {
             setHasFixedSize(true)
             adapter = movieAdapter
         }
     }
 
+    private fun setAdapter() {
+        movieAdapter = MovieAdapterRecyclerView(resultList,::goToDetails,::listChanged)
+    }
+
     private fun setRecyclerView() {
+        setAdapter()
         binding.rvMovie.apply {
             setHasFixedSize(true)
             adapter = movieAdapter
-
         }
     }
 

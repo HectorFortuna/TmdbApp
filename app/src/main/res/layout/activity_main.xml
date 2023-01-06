@@ -25,6 +25,8 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@color/dark_blue"
         app:labelVisibilityMode="auto"
+        app:itemRippleColor="@color/blue"
+        app:itemTextColor="@color/light_green"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

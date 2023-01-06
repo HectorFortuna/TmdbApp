@@ -5,9 +5,11 @@
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
+    <color name="teal">#105756</color>
     <color name="dark_blue">#0D253F</color>
     <color name="dark_blue_700">#093059</color>
     <color name="dark_blue_200">#22466E</color>
+    <color name="blue">#2A5381</color>
     <color name="light_blue">#01B4E4</color>
     <color name="light_green">#90CEA1</color>
     <color name="light_green_700">#649A73</color>
