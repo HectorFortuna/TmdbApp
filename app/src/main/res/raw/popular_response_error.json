@@ -1,0 +1,5 @@
+{
+    "status_code": 400,
+    "status_message": "Something went wrong",
+    "success": false
+}

@@ -19,7 +19,6 @@ class CacheRepositoryImpl @Inject constructor(
             hawk.delete(key.key)
 
         hawk.put(key.key, obj)
-        true
     } catch (t: Throwable) {
         false
     }
@@ -34,13 +33,4 @@ class CacheRepositoryImpl @Inject constructor(
 
     override fun <T> get(key: CacheKeys): T = hawk.get(key.key)
 
-    override fun clearRepository(): Boolean = try {
-        CacheKeys.values().forEach {
-            if (hawk.contains(it.key))
-                hawk.delete(it.key)
-        }
-        true
-    } catch (t: Throwable) {
-        false
-    }
 }

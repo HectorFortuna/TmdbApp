@@ -34,7 +34,6 @@ class DetailsViewModel @Inject constructor(
     fun getMovieDetails(apikey:String, movieId: Int){
         viewModelScope.launch {
             try {
-                _response.value = State.loading(true)
                 val response = withContext(ioDispatcher){
                     useCase.getMovieDetails( movieId, apikey)
                 }

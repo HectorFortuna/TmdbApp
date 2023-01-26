@@ -7,5 +7,4 @@ interface CacheRepository {
     fun <T> add(key: CacheKeys, obj: T): Boolean
     fun <T> delete(key: CacheKeys): Boolean
     fun <T> get(key: CacheKeys): T
-    fun clearRepository():Boolean
 }
